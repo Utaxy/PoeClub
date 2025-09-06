@@ -17,7 +17,6 @@ router.post('/api/login',async (req, res)=>{
         return res.status(400).json({success:false, message:'Invalid username or password'});
     }
     const user= result.rows[0];
-    console.log(user)
     const match = await bcrypt.compare(password, user.password);
     if(!match){
         return res.status(401).json({success:false, message:'Invalid username or password'});

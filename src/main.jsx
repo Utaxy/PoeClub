@@ -5,16 +5,19 @@ import './index.css';
 import Navbar from './Navbar.jsx';
 import Register from './Register.jsx';
 import Login from './Login.jsx';
+import { AuthProvider } from './Authcontext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path='/' element={<div>Homepage</div>} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/login' element={<Login />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<div>Homepage</div>} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/login' element={<Login />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   </StrictMode>,
 )

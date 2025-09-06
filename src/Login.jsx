@@ -1,5 +1,6 @@
-import { use, useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import { useAuth } from './Authcontext.jsx'
 
 
 
@@ -7,7 +8,9 @@ const login = ()=>{
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [notify, setNotify] = useState('');
+    const [loggedUser, setLoggedUser] = useState('');
     const nav = useNavigate();
+    const {login:authLogin} = useAuth();
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
@@ -27,8 +30,15 @@ const login = ()=>{
             setNotify(data.message || 'Login failed');
             return;
         }
-        localStorage.setItem('Alias',JSON.stringify(data.alias));
-        nav('/')
+        
+        localStorage.setItem('Alias',JSON.stringify(data.safeUser.alias));
+        const store = JSON.parse(localStorage.getItem('Alias'));
+        setLoggedUser(store);
+
+        authLogin(data.safeUser.alias);
+        setTimeout(()=>{
+            nav('/')
+        }, 2000)
         } catch (error) {
             console.error('Network/login error',error);
             setNotify('Network error please try again later');
@@ -39,7 +49,9 @@ const login = ()=>{
        <div className="flex justify-center items-center min-h-screen bg-neutral-950">
             
             <form onSubmit={handleSubmit} className="flex items-center flex-col border border-white w-100 h-100 mt-10 gap-6 rounded shadow-lg bg-neutral-800">
-                <div>{notify}</div>
+                {notify ? <div>{notify}</div> : <></>}
+                {loggedUser ? <div className="text-2xl font-medium">Welcome back! {loggedUser   }<br/> You're Redirecting</div>: <></>}
+                
                 <div className="text-2xl font-bold">LOGIN:</div>
                 <div className="flex gap-4 mt-10">
                     <label htmlFor="username" className="text-black" >Username:</label>
