@@ -5,6 +5,7 @@ import './index.css';
 import Navbar from './Navbar.jsx';
 import Register from './Register.jsx';
 import Login from './Login.jsx';
+import Post from './Post.jsx';
 import { AuthProvider } from './Authcontext.jsx';
 
 createRoot(document.getElementById('root')).render(
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')).render(
           <Route path='/' element={<div>Homepage</div>} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/post' element={<Post />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
