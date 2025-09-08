@@ -1,4 +1,4 @@
-# VipClub - Social Messaging Platform
+# PoeClub - Social Messaging Platform
 
 A modern social messaging platform built with React.js frontend and Node.js backend, featuring user authentication, real-time messaging, and a clean user interface.
 
