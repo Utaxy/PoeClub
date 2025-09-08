@@ -6,6 +6,7 @@ import Navbar from './Navbar.jsx';
 import Register from './Register.jsx';
 import Login from './Login.jsx';
 import Post from './Post.jsx';
+import Messages from './Messages.jsx';
 import { AuthProvider } from './Authcontext.jsx';
 
 createRoot(document.getElementById('root')).render(
@@ -14,7 +15,7 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path='/' element={<div>Homepage</div>} />
+          <Route path='/' element={<Messages />} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
           <Route path='/post' element={<Post />} />
