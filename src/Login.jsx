@@ -1,90 +1,80 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { useAuth } from './Authcontext.jsx'
+import { GoogleLogin } from "@react-oauth/google";
 
 
 
 const login = ()=>{
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
     const [notify, setNotify] = useState('');
-    const [loggedUser, setLoggedUser] = useState('');
-    const nav = useNavigate();
     const {login:authLogin} = useAuth();
+    const nav = useNavigate();
 
-    const handleSubmit = async(e)=>{
-        e.preventDefault();
-        setNotify('');
-        if(!username || !password){
-            setNotify('You need to fill everything');
-            return;
-        }
-        try {
-            const response = await fetch('http://localhost:8000/api/login',{
-            method:'POST',
-            headers:{'Content-type':'application/json'},
-            body: JSON.stringify({username, password})
-        })
-        const data = await response.json();
-        if(!response.ok){
-            setNotify(data.message || 'Login failed');
-            return;
-        }
-        
-        localStorage.setItem('Alias',JSON.stringify(data.safeUser.alias));
-        const store = JSON.parse(localStorage.getItem('Alias'));
-        setLoggedUser(store);
 
-        authLogin(data.safeUser.alias);
-        setTimeout(()=>{
-            nav('/')
-        }, 2000)
-        } catch (error) {
-            console.error('Network/login error',error);
-            setNotify('Network error please try again later');
+    const handleGoogleSuccess = async(credentialResponse)=>{
+            try {
+                
+                const base64Url = credentialResponse.credential.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c){
+                    return '%'+('00'+c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''))
+
+                const payload = JSON.parse(jsonPayload);
+                const {sub: googleId} = payload;
+                
+                const response = await fetch('http://localhost:8000/api/google-login',{
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({
+                        googleId: googleId
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if(response.ok){
+                    authLogin(data.alias, data.picture);
+                    setNotify('Login successful!');
+                    setTimeout(()=>{
+                        nav('/');
+                    },1000)
+                } else {
+                    setNotify(data.message || 'Login failed');
+                }
+                
+            } catch (error) {
+                setNotify('Login error: ' + error.message);
+            }
         }
+        const handleGoogleError = ()=>{
+            setNotify('Google auth failed. Please try again later.')
+        }
+        return(
+            <div className="flex justify-center items-center min-h-screen bg-neutral-950">
+                <div className="flex items-center flex-col border border-white w-96 mt-10 gap-6 rounded shadow-lg bg-neutral-800 p-8">
+                    <div className="text-red-400 min-h-6 text-center">{notify}</div>
+                        <>
+                            <div className="text-3xl font-bold text-white text-center">Login to the PoeClub</div>
+                            <div className="text-gray-300 text-center">If you want to post or see the authors you need to login</div>
+                            <div className="w-full flex justify-center">
+                                <GoogleLogin 
+                                    onSuccess={handleGoogleSuccess}
+                                    onError={handleGoogleError}
+                                    text="signup_with"
+                                    shape="rectangular"
+                                    theme="filled_black"
+                                    size="large"
+                                    width="300"
+                                />
+                            </div>
+                        </>
+                </div>
+            </div>
+        )
     }
     
-    return(
-       <div className="flex justify-center items-center min-h-screen bg-neutral-950">
-            
-            <form onSubmit={handleSubmit} className="flex items-center flex-col border border-white w-100 h-100 mt-10 gap-6 rounded shadow-lg bg-neutral-800">
-                {notify ? <div>{notify}</div> : <></>}
-                {loggedUser ? <div className="text-2xl font-medium">Welcome back! {loggedUser   }<br/> You're Redirecting</div>: <></>}
-                
-                <div className="text-2xl font-bold">LOGIN:</div>
-                <div className="flex gap-4 mt-10">
-                    <label htmlFor="username" className="text-black" >Username:</label>
-                    <input 
-                        className="border border-white hover:border-sky-950 shadow-sm rounded placeholder:text-neutral-950"
-                        type="text"
-                        name="username"
-                        placeholder="Username"
-                        value={username}
-                        onChange={(e)=>setUsername(e.target.value)}
-                    />
-                </div>
-                <div className="flex gap-4">
-                    <label htmlFor="password" className="text-black">Password:</label>
-                    <input
-                        className="border border-white hover:border-neutral-950 shadow-sm rounded placeholder:text-neutral-950"
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e)=>{setPassword(e.target.value)}}
-                    />
-                </div>
-                <button 
-                    type="submit"
-                    className="mt-10 border border-white w-20 h-10 hover:border-sky-950 rounded shadow-md hover:shadow-lg text-black bg-neutral-400"
-                >
-                    Submit
-                </button>
-            </form>
-        </div>
-    )
-}
+    
 
 
 export default login;

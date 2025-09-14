@@ -6,29 +6,36 @@ const AuthContext = createContext();
 
 export const AuthProvider=({children})=>{
     const [loggedUser, setLoggedUser] = useState('');
+    const [storedPicture, setStoredPicture] = useState('');
 
 
     useEffect(()=>{
-        if(localStorage.getItem('Alias')){
+        if(localStorage.getItem('alias')){
             try {
-                const storedAlias = JSON.parse(localStorage.getItem('Alias'));
-                setLoggedUser(storedAlias)
+                const storedAlias = JSON.parse(localStorage.getItem('alias'));
+                const storedPicture = JSON.parse(localStorage.getItem('picture'));
+                setStoredPicture(storedPicture);
+                setLoggedUser(storedAlias);
             } catch (error) {
                 console.error(error);
             }
         }
     },[]);
 
-    const login = (alias)=>{
-        localStorage.setItem('Alias', JSON.stringify(alias));
-        setLoggedUser(alias)
+    const login = (alias, picture)=>{
+        localStorage.setItem('alias', JSON.stringify(alias));
+        localStorage.setItem('picture', JSON.stringify(picture));
+        setLoggedUser(alias);
+        setStoredPicture(picture);
     }
     const logout = ()=>{
-        localStorage.removeItem('Alias');
+        localStorage.removeItem('alias');
+        localStorage.removeItem('picture');
         setLoggedUser('');
+        setStoredPicture('')
     }
     return(
-        <AuthContext.Provider value={{loggedUser, login, logout}}>
+        <AuthContext.Provider value={{loggedUser, login, logout, storedPicture}}>
             {children}
         </AuthContext.Provider>
     )

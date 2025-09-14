@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import './index.css';
 import Navbar from './Navbar.jsx';
 import Register from './Register.jsx';
@@ -11,16 +12,18 @@ import { AuthProvider } from './Authcontext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path='/' element={<Messages />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/post' element={<Post />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <AuthProvider>
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route path='/' element={<Messages />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/post' element={<Post />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </GoogleOAuthProvider>
   </StrictMode>,
 )

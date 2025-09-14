@@ -9,7 +9,7 @@ const Post = ()=>{
     const nav = useNavigate();
 
     const handleSubmit = async(e)=>{
-        const userAlias = localStorage.getItem('Alias');
+        const userAlias = localStorage.getItem('alias');
         e.preventDefault();
         if(!post){
             setNotify('Please write a message for post');

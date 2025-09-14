@@ -1,34 +1,31 @@
 import express from 'express';
 import pool from '../database/db.js';
-import bcrypt from 'bcrypt'
+
 
 const router = express.Router();
 
-
-router.post('/api/login',async (req, res)=>{
+router.post('/api/google-login',async(req, res)=>{
     try {
-        const {username, password} = req.body;
-    if(!username || !password){
-        return res.status(400).json({success:false, message:'Missing credentials'});
-    }
-
-    const result = await pool.query('SELECT id, username, password, alias FROM users WHERE username =$1',[username]);
-    if(result.rowCount===0){
-        return res.status(400).json({success:false, message:'Invalid username or password'});
-    }
-    const user= result.rows[0];
-    const match = await bcrypt.compare(password, user.password);
-    if(!match){
-        return res.status(401).json({success:false, message:'Invalid username or password'});
-    }
-    const successfullLogin = {id:user.id, username:user.username, alias:user.alias}
-    return res.status(200).json({success:true, safeUser: successfullLogin})
+        const {googleId} = req.body;
+        const userQuery = await pool.query('SELECT alias, picture FROM users WHERE google_id= $1',[googleId]);
+        if(userQuery.rows.length>0){
+            const user = userQuery.rows[0]
+            res.status(200).json({
+                success:true,
+                alias:user.alias,
+                picture:user.picture
+            });
+        }else{
+            res.status(404).json({
+                success:false,
+                message:'User not found.'
+            })
+        }
     } catch (error) {
-        console.error('login error:', error);
-        return res.status(500).json({success:false, message:'Server error'});
+        console.error(error,'Database Error');
+        res.status(500).json({message:'Database error' + error.message})
     }
 })
-
 
 
 export default router;

@@ -4,7 +4,7 @@ import { useAuth } from './Authcontext.jsx';
 
 
 const Navbar = ()=>{
-    const {loggedUser, logout} = useAuth()
+    const {loggedUser, logout, storedPicture} = useAuth()
     return(
         <div className='flex justify-between items-center border border-white m-5 rounded-2xl'>
             <div className='flex justify-center gap-4 items-center'>
@@ -14,7 +14,10 @@ const Navbar = ()=>{
             <div className='flex gap-50 items-center mr-10'>
                 {loggedUser ? (
                     <>
-                        <div className='text-2xl text-white'>Welcome {loggedUser} !</div> 
+                        <div className='flex justify-between items-center gap-4'>
+                            <img src={storedPicture} className='rounded-full w-15 h-15'></img>
+                            <div className='text-2xl text-white'>Welcome {loggedUser} !</div>
+                        </div>     
                         <button onClick={logout} className='text-2xl text-white hover:text-gray-500'>Logout</button>
                     </>
                 ) : (
