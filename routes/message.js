@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/api/messages',async(req, res)=>{
     try {
-        const showMessage = await pool.query('SELECT alias, message, created_at FROM messages ORDER BY created_at DESC');
+        const showMessage = await pool.query('SELECT id, alias, message, created_at, likes FROM messages ORDER BY created_at DESC');
         res.status(200).json({
             success: true,
             data:showMessage.rows
@@ -22,6 +22,50 @@ router.get('/api/messages',async(req, res)=>{
         })
     }
 });
+
+router.post('/api/messages/likes', async(req, res)=>{
+    try {
+        const {messageId, userId} = req.body;
+
+        if(!messageId || !userId){
+            return res.status(400).json({
+                success:false,
+                message:'Message id  or user id is required'
+            })
+        };
+        const existingLike = await pool.query('SELECT id FROM message_likes WHERE message_id=$1 AND user_alias=$2',[messageId, userId]);
+        if(existingLike.rows.length >0){
+            return res.status(400).json({
+                success:false,
+                message: 'You already liked this message'
+            })
+        }
+        await pool.query(
+            'INSERT INTO message_likes (message_id, user_alias) VALUES($1,$2)',[messageId, userId]
+        );
+
+        const updateResult = await pool.query('UPDATE messages SET likes = likes + 1 WHERE id=$1 RETURNING likes',[messageId]);
+
+        if(updateResult.rows.length===0){
+            return res.status(404).json({
+                success:false,
+                message:'Message not found'
+            })
+        };
+        res.json({
+            success:true,
+            message:'Like added successfully',
+            LikeCount: updateResult.rows[0].likes
+        });
+        
+    } catch (error) {
+        console.error('like error', error);
+        res.status(500).json({
+            success:false,
+            message:'Database error' + error.message
+        })
+    }
+})
 
 
 
