@@ -33,3 +33,7 @@ app.get('/health', (req, res) => {
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on port ${PORT}`);
 });
+
+
+
+//postgresql://postgres:EOPWAUcwljTqOYsijZYSYeycXvjTRmca@yamanote.proxy.rlwy.net:56736/railway
