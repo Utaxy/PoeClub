@@ -10,7 +10,7 @@ const Messages = ()=>{
     useEffect(()=>{
         const fetchMessages = async()=>{
             try {
-                const response = await fetch(`${API}api/messages`,{
+                const response = await fetch(`${API}/api/messages`,{
                     method:'GET',
                     headers:{'Content-type':'application/json'}
                 })
