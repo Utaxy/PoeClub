@@ -14,7 +14,9 @@ app.use(cors({
     origin: process.env.NODE_ENV === 'production' 
         ? ['https://vip-club.vercel.app'] // Buraya Vercel URL'ini yazacağız
         : ['http://localhost:5173', 'http://localhost:3000'],
-    credentials: true
+    credentials: true,
+    methods:['GET','POST','PUT','DELETE','OPTIONS'],
+    allowedHeaders: ['Content-Type','Authorization']
 }));
 
 app.use(express.json());
@@ -25,15 +27,12 @@ app.use(postLogin);
 app.use(postPost);
 app.use(messageRoute);
 
+app.options('*', cors())
 // Health check endpoint
 app.get('/health', (req, res) => {
     res.json({ status: 'OK', message: 'Server is running!' });
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
-
-
-
-//postgresql://postgres:EOPWAUcwljTqOYsijZYSYeycXvjTRmca@yamanote.proxy.rlwy.net:56736/railway
