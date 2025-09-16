@@ -37,14 +37,7 @@ app.use(cors({
 }));
 
 // Preflight'ı kesin cevapla
-app.options('*', cors({
-  origin: function(origin, callback) {
-    if (!origin) return callback(null, true);
-    if (whitelist.includes(origin)) return callback(null, true);
-    return callback(null, false);
-  },
-  credentials: true
-}));
+
 
 app.use(express.json());
 
