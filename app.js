@@ -31,7 +31,6 @@ app.use(postLogin);
 app.use(postPost);
 app.use(messageRoute);
 
-app.options('*', cors())
 // Health check endpoint
 app.get('/health', (req, res) => {
     res.json({ status: 'OK', message: 'Server is running!' });
