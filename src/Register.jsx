@@ -14,7 +14,7 @@ const register = ()=>{
     const nav = useNavigate();
     const {login:authLogin} = useAuth();
     const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-
+    console.log('API base used:', import.meta.env.VITE_API_URL)
 
     const handleGoogleSuccess = async(credentialResponse) =>{
         try {
