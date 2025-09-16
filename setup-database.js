@@ -29,7 +29,8 @@ async function createTables() {
                 user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
                 alias VARCHAR(50) NOT NULL,
                 message TEXT NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                likes INTEGER DEFAULT 0,
             );
         `);
 
@@ -37,7 +38,7 @@ async function createTables() {
             CREATE TABLE IF NOT EXISTS message_likes (
                 id SERIAL PRIMARY KEY,
                 message_id INTEGER REFERENCES messages(id) ON DELETE CASCADE,
-                user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+                user_alias INTEGER REFERENCES users(id) ON DELETE CASCADE,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 UNIQUE(message_id, user_id)
             );
