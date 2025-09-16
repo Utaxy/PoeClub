@@ -12,7 +12,7 @@ const app = express();
 // CORS ayarları - production için
 app.use(cors({
     origin: process.env.NODE_ENV === 'production' 
-        ? ['https://vip-club.vercel.app'] // Buraya Vercel URL'ini yazacağız
+        ? ['https://vip-club.vercel.app/'] // Buraya Vercel URL'ini yazacağız
         : ['http://localhost:5173', 'http://localhost:3000'],
     credentials: true,
     methods:['GET','POST','PUT','DELETE','OPTIONS'],
