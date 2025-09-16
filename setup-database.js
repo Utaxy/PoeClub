@@ -5,7 +5,7 @@ const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
-console.log(process.env.DATABASE_URL)
+console.log('s',process.env.DATABASE_URL)
 
 async function createTables() {
     const client = await pool.connect();
