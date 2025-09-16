@@ -7,6 +7,7 @@ const Post = ()=>{
     const [post, setPost] = useState('');
     const [notify, setNotify] = useState('');
     const nav = useNavigate();
+    const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
     const handleSubmit = async(e)=>{
         const userAlias = localStorage.getItem('alias');
@@ -21,7 +22,7 @@ const Post = ()=>{
         }
         
         try {
-            const response = await fetch('http://localhost:8000/api/post',{
+            const response = await fetch(`${API}/api/post`,{
                 method:'POST',
                 headers:{'Content-type':'application/json',
                     'x-user-alias': JSON.parse(userAlias)

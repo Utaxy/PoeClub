@@ -5,11 +5,12 @@ import eap from './assets/eap.png'
 const Messages = ()=>{
     const [messages, setMessages] = useState([]);
     const {loggedUser} = useAuth();
+    const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
     useEffect(()=>{
         const fetchMessages = async()=>{
             try {
-                const response = await fetch('http://localhost:8000/api/messages',{
+                const response = await fetch(`${API}api/messages`,{
                     method:'GET',
                     headers:{'Content-type':'application/json'}
                 })
@@ -29,7 +30,7 @@ const Messages = ()=>{
 
     const handleLike = async(messageId)=>{
        try {
-        const response = await fetch('http://localhost:8000/api/messages/likes',{
+        const response = await fetch(`${API}/api/messages/likes`,{
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({

@@ -9,7 +9,7 @@ const login = ()=>{
     const [notify, setNotify] = useState('');
     const {login:authLogin} = useAuth();
     const nav = useNavigate();
-
+    const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
     const handleGoogleSuccess = async(credentialResponse)=>{
             try {
@@ -23,7 +23,7 @@ const login = ()=>{
                 const payload = JSON.parse(jsonPayload);
                 const {sub: googleId} = payload;
                 
-                const response = await fetch('http://localhost:8000/api/google-login',{
+                const response = await fetch(`${API}/api/google-login`,{
                     method:'POST',
                     headers:{'Content-Type':'application/json'},
                     body: JSON.stringify({

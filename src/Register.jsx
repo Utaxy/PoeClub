@@ -13,6 +13,7 @@ const register = ()=>{
     const [googleUserData, setGoogleUserData] = useState(null);
     const nav = useNavigate();
     const {login:authLogin} = useAuth();
+    const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 
     const handleGoogleSuccess = async(credentialResponse) =>{
@@ -50,7 +51,7 @@ const register = ()=>{
         }
 
         try {
-            const response = await fetch('http://localhost:8000/api/google-register', {
+            const response = await fetch(`${API}/api/google-register`, {
                 method:'POST',
                 headers: {'Content-type':'application/json'},
                 body: JSON.stringify({
