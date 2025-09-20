@@ -16,7 +16,6 @@ const whitelist = [
 ];
 
 app.use((req, res, next) => {
-  console.log('CORS debug - Origin header:', req.headers.origin);
   next();
 });
 
@@ -41,10 +40,7 @@ app.use(cors({
 
 app.use(express.json());
 
-app.use((req, res, next) => {
-  console.log('Origin header:', req.headers.origin);
-  next();
-});
+
 // Routes
 app.use(postRegister);
 app.use(postLogin);

@@ -65,6 +65,63 @@ router.post('/api/messages/likes', async(req, res)=>{
             message:'Database error' + error.message
         })
     }
+});
+
+router.post('/api/messages/comments',async(req, res)=>{
+    try {
+        const {comment,userId, messageId} = req.body;
+
+        const doesUserExist = await pool.query('SELECT alias FROM users WHERE alias=$1',[userId]);
+        if(doesUserExist.rows.length === 0 ){
+            return res.status(404).json({
+                success:false,
+                message:'User not found'
+            })
+        };
+        const doesMessageExist = await pool.query('SELECT id FROM messages WHERE id=$1',[messageId]);
+        if(doesMessageExist.rows.length===0){
+            return res.status(404).json({
+                success:false,
+                message:'Message not found'
+            });
+        };
+        if(!comment){
+            return res.status(404).json({
+                success:false,
+                message:'You need to write a comment'
+            });
+        };
+        const registeredComment=await pool.query('INSERT INTO message_comments (comment, user_alias, message_id) VALUES($1,$2,$3) RETURNING *',[comment,userId,messageId])
+        res.status(202).json({
+            success:true,
+            data:registeredComment.rows[0]
+        })
+
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({
+            success:false,
+            message:'Database error',
+            error:error.message
+        })
+    }
+})
+
+router.get('/api/messages/comments',async(req, res)=>{
+    try {
+        const showComments = await pool.query('SELECT message_id, user_alias, comment, created_at FROM message_comments ORDER BY created_at DESC') 
+        
+        res.status(200).json({
+            success:true,
+            data:showComments.rows
+        })
+    } catch (error) {
+        console.error('database error: ',error)
+        res.status(500).json({
+            success:false,
+            message:'Failed to fetch comments', error
+        })
+    }
 })
 
 
