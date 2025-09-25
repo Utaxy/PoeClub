@@ -11,10 +11,15 @@ router.post('/api/post',requireAuth,async (req, res)=>{
         const {post} = req.body;
         const userAlias = req.user.alias;
 
-        const userPost = await pool.query(
-            'INSERT INTO messages (message, alias) VALUES ($1, $2) RETURNING *',
-            [post, userAlias]
-        );
+        const userFindPicture = await pool.query('SELECT picture FROM users WHERE alias=$1',[userAlias]);
+        if(userFindPicture.rows.length===0){
+            return res.status(404).json({
+                success:false,
+                message:'User not found'
+            });
+        };
+        const userPicture = userFindPicture.rows[0].picture;
+        const userPost = await pool.query('INSERT INTO messages (message, alias, picture) VALUES($1,$2,$3)',[post,userAlias,userPicture]);
         res.status(201).json({
             success:true,
             data:userPost.rows[0]

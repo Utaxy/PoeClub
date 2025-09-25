@@ -8,7 +8,8 @@ const Messages = ()=>{
     const [openCommentFor, setOpenCommentFor] = useState(null);
     const [comments, setComments] = useState([])
     const {loggedUser} = useAuth();
-    const [notify ,setNotify] = useState('')
+    const [notify ,setNotify] = useState('');
+    const [postPicture, setPostPicture] = useState([]);
     const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
     useEffect(()=>{
@@ -30,7 +31,8 @@ const Messages = ()=>{
         };
         fetchMessages();
     },[]);
-
+    console.log(messages);
+    
     useEffect(()=>{
         const fetchComments = async()=>{
             try {
@@ -123,7 +125,10 @@ const Messages = ()=>{
       {loggedUser ? (
         <>
           <div className="mb-2">
-            <div className="text-lg sm:text-xl lg:text-2xl text-blue-400 font-semibold">{message.alias}:</div>
+            <div className="flex items-center gap-4">
+              <img className='rounded-full w-15 h-15'src={message.picture}></img>
+              <div className="text-lg sm:text-xl lg:text-2xl text-blue-400 font-semibold">{message.alias}:</div>
+            </div>
             <div className="text-base sm:text-lg lg:text-xl text-white leading-relaxed whitespace-pre-wrap">{message.message}</div>
           </div>
 

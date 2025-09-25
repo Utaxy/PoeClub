@@ -1,6 +1,5 @@
 import express from 'express';
 import pool from '../database/db.js';
-
 const router = express.Router();
 
 
@@ -34,6 +33,6 @@ router.post('/api/google-register',async(req, res)=>{
         console.error('Google registration failed', error);
         res.status(500).json(error,{message:'Server error'});
     }
-})
+ })
 
 export default router;
