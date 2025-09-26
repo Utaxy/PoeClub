@@ -12,8 +12,8 @@ export const AuthProvider=({children})=>{
     useEffect(()=>{
         if(localStorage.getItem('alias')){
             try {
-                const storedAlias = JSON.parse(localStorage.getItem('alias'));
-                const storedPicture = JSON.parse(localStorage.getItem('picture'));
+                const storedAlias = localStorage.getItem('alias');
+                const storedPicture = localStorage.getItem('picture');
                 setStoredPicture(storedPicture);
                 setLoggedUser(storedAlias);
             } catch (error) {
@@ -23,8 +23,8 @@ export const AuthProvider=({children})=>{
     },[]);
 
     const login = (alias, picture)=>{
-        localStorage.setItem('alias', JSON.stringify(alias));
-        localStorage.setItem('picture', JSON.stringify(picture));
+        localStorage.setItem('alias', alias);
+        localStorage.setItem('picture',picture);
         setLoggedUser(alias);
         setStoredPicture(picture);
     }

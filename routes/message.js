@@ -70,7 +70,6 @@ router.post('/api/messages/likes', async(req, res)=>{
 router.post('/api/messages/comments',async(req, res)=>{
     try {
         const {comment,userId, messageId} = req.body;
-
         const doesUserExist = await pool.query('SELECT alias FROM users WHERE alias=$1',[userId]);
         if(doesUserExist.rows.length === 0 ){
             return res.status(404).json({
@@ -78,6 +77,7 @@ router.post('/api/messages/comments',async(req, res)=>{
                 message:'User not found'
             })
         };
+        
         const doesMessageExist = await pool.query('SELECT id FROM messages WHERE id=$1',[messageId]);
         if(doesMessageExist.rows.length===0){
             return res.status(404).json({
@@ -91,7 +91,9 @@ router.post('/api/messages/comments',async(req, res)=>{
                 message:'You need to write a comment'
             });
         };
-        const registeredComment=await pool.query('INSERT INTO message_comments (comment, user_alias, message_id) VALUES($1,$2,$3) RETURNING *',[comment,userId,messageId])
+        const userProfilePicture = await pool.query('SELECT picture FROM users WHERE alias=$1',[userId])
+        const userPp = userProfilePicture.rows[0].picture
+        const registeredComment=await pool.query('INSERT INTO message_comments (comment, user_alias, message_id, picture) VALUES($1,$2,$3,$4) RETURNING *',[comment,userId,messageId,userPp]);
         res.status(202).json({
             success:true,
             data:registeredComment.rows[0]
@@ -109,7 +111,7 @@ router.post('/api/messages/comments',async(req, res)=>{
 
 router.get('/api/messages/comments',async(req, res)=>{
     try {
-        const showComments = await pool.query('SELECT message_id, user_alias, comment, created_at FROM message_comments ORDER BY created_at DESC') 
+        const showComments = await pool.query('SELECT message_id, user_alias, comment, created_at,picture FROM message_comments ORDER BY created_at DESC') 
         
         res.status(200).json({
             success:true,

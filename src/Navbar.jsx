@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+
 import crown from './assets/crown.webp'
 import { useAuth } from './Authcontext.jsx';
 
@@ -17,7 +17,8 @@ const Navbar = ()=>{
                         <div className='flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-2 sm:gap-4 text-center sm:text-left'>
                             <img src={storedPicture} className='rounded-full w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16'></img>
                             <div className='text-sm sm:text-lg lg:text-xl text-white'>Welcome <span className='font-semibold text-blue-400'>{loggedUser}</span>!</div>
-                        </div>     
+                        </div>
+                        <a href='/profile' className='text-sm sm:text-lg lg:text-xl text-white hover:text-blue-400 transition-colors duration-200 px-3 py-1 border border-transparent hover:border-blue-400 rounded'>Profile</a>     
                         <button onClick={logout} className='text-sm sm:text-lg lg:text-xl text-white hover:text-red-400 transition-colors duration-200 px-3 py-1 border border-transparent hover:border-red-400 rounded'>Logout</button>
                     </>
                 ) : (

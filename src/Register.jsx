@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import {GoogleLogin} from '@react-oauth/google';
 import {useAuth} from './Authcontext.jsx'
@@ -86,6 +86,7 @@ const register = ()=>{
     };
 
     return(
+      
         <div className="flex justify-center items-center min-h-screen bg-neutral-950">
             <div className="flex items-center flex-col border border-white w-96 mt-10 gap-6 rounded shadow-lg bg-neutral-800 p-8">
                 <div className="text-red-400 min-h-6 text-center">{notify}</div>

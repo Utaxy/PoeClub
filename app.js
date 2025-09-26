@@ -5,7 +5,6 @@ import cors from 'cors';
 import postLogin from './routes/login.js';
 import postPost from './routes/post.js';
 import messageRoute from './routes/message.js';
-
 const PORT = process.env.PORT || 8000;
 const app = express();
 
