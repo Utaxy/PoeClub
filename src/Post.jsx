@@ -30,8 +30,9 @@ const Post = ()=>{
                 body: JSON.stringify({post:post})
             })
             const data =await response.json();
+            console.log(data)
 
-            if(!response.ok){
+            if(!data.success){
                 console.error('Post error', data.message);
                 setNotify(data.message || 'Post failed');
                 return;
@@ -43,7 +44,7 @@ const Post = ()=>{
                 nav('/')
             },1000)
         } catch (error) {
-            console.error(error)
+            console.error('burasi:',error.message)
         }
     };
 
@@ -61,7 +62,7 @@ const Post = ()=>{
                     value={post}
                     onChange={(e)=>setPost(e.target.value)}
                 />
-                <button onClick={handleSubmit} className="flex border border-white text-2xl text-white cursor-pointer">Submit</button>
+                <button type='button'onClick={handleSubmit} className="flex border border-white text-2xl text-white cursor-pointer">Submit</button>
             </form>
         </div>
     )

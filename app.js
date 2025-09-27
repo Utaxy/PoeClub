@@ -5,6 +5,7 @@ import cors from 'cors';
 import postLogin from './routes/login.js';
 import postPost from './routes/post.js';
 import messageRoute from './routes/message.js';
+import profileRoute from './routes/profile.js'
 const PORT = process.env.PORT || 8000;
 const app = express();
 
@@ -45,6 +46,7 @@ app.use(postRegister);
 app.use(postLogin);
 app.use(postPost);
 app.use(messageRoute);
+app.use(profileRoute);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

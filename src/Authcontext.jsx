@@ -5,7 +5,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 const AuthContext = createContext();
 
 export const AuthProvider=({children})=>{
-    const [loggedUser, setLoggedUser] = useState('');
+    const [loggedUser, setLoggedUser] = useState(null);
     const [storedPicture, setStoredPicture] = useState('');
 
 
@@ -23,7 +23,7 @@ export const AuthProvider=({children})=>{
     },[]);
 
     const login = (alias, picture)=>{
-        localStorage.setItem('alias', alias);
+        localStorage.setItem('alias', JSON.stringify(alias));
         localStorage.setItem('picture',picture);
         setLoggedUser(alias);
         setStoredPicture(picture);
@@ -31,7 +31,7 @@ export const AuthProvider=({children})=>{
     const logout = ()=>{
         localStorage.removeItem('alias');
         localStorage.removeItem('picture');
-        setLoggedUser('');
+        setLoggedUser(null);
         setStoredPicture('')
     }
     return(

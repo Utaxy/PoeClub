@@ -31,7 +31,7 @@ const Messages = ()=>{
         };
         fetchMessages();
     },[API]);
-    
+console.log(messages);    
     useEffect(()=>{
         const fetchComments = async()=>{
             try {
@@ -196,7 +196,7 @@ const Messages = ()=>{
                             {/* Comment form */}
                             {openCommentFor === message.id && (
                                 <form onSubmit={(e) => commentSubmit(message.id, e)} className="p-3 md:px-6 md:py-4 border-t border-white/10 bg-neutral-900/30">
-                                    <div className="flex flex-col gap-3">
+                                    <div key={message.id} className="flex flex-col gap-3">
                                         {notify && <div className="text-sm text-red-300">{notify}</div>}
                                         <input
                                             className="w-full p-2 rounded bg-neutral-800 text-white border border-white/10"
