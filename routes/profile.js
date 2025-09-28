@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/api/usermessages',async(req, res)=>{
   const {alias} = req.body;
   try{
-    const usersMessages = await pool.query('SELECT * FROM messages WHERE alias=$1',[alias])
+    const usersMessages = await pool.query('SELECT * FROM messages WHERE alias=$1 ORDER BY created_at DESC',[alias])
     if(usersMessages.rows.length===0){
       return res.status(404).json({
         success:false,
