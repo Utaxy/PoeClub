@@ -25,7 +25,7 @@ const Post = ()=>{
             const response = await fetch(`${API}/api/post`,{
                 method:'POST',
                 headers:{'Content-type':'application/json',
-                    'x-user-alias': JSON.parse(userAlias)
+                    'x-user-alias': userAlias
                 },
                 body: JSON.stringify({post:post})
             })

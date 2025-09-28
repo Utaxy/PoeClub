@@ -23,7 +23,7 @@ export const AuthProvider=({children})=>{
     },[]);
 
     const login = (alias, picture)=>{
-        localStorage.setItem('alias', JSON.stringify(alias));
+        localStorage.setItem('alias', alias);
         localStorage.setItem('picture',picture);
         setLoggedUser(alias);
         setStoredPicture(picture);
