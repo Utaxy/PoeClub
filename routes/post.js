@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post('/api/post',requireAuth,async (req, res)=>{
     try {
-        const {post} = req.body;
+        const {post, imgUrl} = req.body;
         const userAlias = req.user.alias;
 
         const userFindPicture = await pool.query('SELECT picture FROM users WHERE alias=$1',[userAlias]);
@@ -19,7 +19,7 @@ router.post('/api/post',requireAuth,async (req, res)=>{
             });
         };
         const userPicture = userFindPicture.rows[0].picture;
-        const userPost = await pool.query('INSERT INTO messages (message, alias, picture) VALUES($1,$2,$3)',[post,userAlias,userPicture]);
+        const userPost = await pool.query('INSERT INTO messages (message, alias, picture, postimg) VALUES($1,$2,$3,$4)',[post,userAlias,userPicture,imgUrl]);
         res.status(201).json({
             success:true,
             data:userPost.rows[0]

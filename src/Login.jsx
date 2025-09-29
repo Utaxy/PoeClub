@@ -61,7 +61,7 @@ const login = ()=>{
                                 <GoogleLogin 
                                     onSuccess={handleGoogleSuccess}
                                     onError={handleGoogleError}
-                                    text="signup_with"
+                                    text="login_with"
                                     shape="rectangular"
                                     theme="filled_black"
                                     size="large"

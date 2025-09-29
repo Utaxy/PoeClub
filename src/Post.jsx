@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 
 
@@ -6,8 +6,45 @@ import { useNavigate } from "react-router-dom";
 const Post = ()=>{
     const [post, setPost] = useState('');
     const [notify, setNotify] = useState('');
+    const [file, setFile] = useState(null);
+    const [mediaUrl, setMediaUrl] = useState('');
     const nav = useNavigate();
     const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
+
+    const handleChange = (e)=>{
+        setFile(e.target.files[0]);
+    }
+    const handleUpdate = async(e)=>{
+        e.preventDefault();
+        if(!file) return;
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset','poeclub');
+        
+
+        const response = await fetch("https://api.cloudinary.com/v1_1/dgaiwbr7r/auto/upload",{
+            method:'POST',
+            body: formData
+        });
+        const data = await response.json();
+        setMediaUrl(data.secure_url);
+        
+    };
+    useEffect(()=>{
+        const fetchMessages= async()=>{
+            try {
+                await fetch(`${API}/api/post`,{
+                    method:'POST',
+                    headers:{'Content-type':'application/json'},
+                    body: JSON.stringify({imgUrl:data.secure_url})
+                })
+            } catch (error) {
+                console.error('error',error)
+            }
+        };
+        fetchMessages();
+    },[mediaUrl])
 
     const handleSubmit = async(e)=>{
         const userAlias = localStorage.getItem('alias');
@@ -44,7 +81,7 @@ const Post = ()=>{
                 nav('/')
             },1000)
         } catch (error) {
-            console.error('burasi:',error.message)
+            console.error('Error:',error.message)
         }
     };
 
@@ -63,6 +100,23 @@ const Post = ()=>{
                     onChange={(e)=>setPost(e.target.value)}
                 />
                 <button type='button'onClick={handleSubmit} className="flex border border-white text-2xl text-white cursor-pointer">Submit</button>
+            </form>
+            <form onSubmit={handleUpdate}>
+                <input
+                    className="text-white" 
+                    type="file"
+                    accept="image/*,video/*"
+                    onChange={handleChange}
+                />
+                <button className="border border-white text-white" type="submit">Load</button>
+                {mediaUrl &&(
+                    mediaUrl.endsWith('.mp4') ?(
+                        <video width="320" controls src={mediaUrl}></video>
+                    ): (
+                        <img width='320' src={mediaUrl} />
+                    )
+                )}
+
             </form>
         </div>
     )
