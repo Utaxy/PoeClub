@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/api/messages',async(req, res)=>{
     try {
-        const showMessage = await pool.query('SELECT id, alias, message, picture, created_at, likes FROM messages ORDER BY created_at DESC');
+        const showMessage = await pool.query('SELECT id, alias, message, picture, postimg, created_at, likes FROM messages ORDER BY created_at DESC');
         res.status(200).json({
             success: true,
             data:showMessage.rows

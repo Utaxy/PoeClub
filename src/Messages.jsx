@@ -31,7 +31,6 @@ const Messages = ()=>{
         };
         fetchMessages();
     },[API]);
-console.log(messages);    
     useEffect(()=>{
         const fetchComments = async()=>{
             try {
@@ -151,6 +150,7 @@ console.log(messages);
                                                 <div className="text-lg sm:text-xl lg:text-2xl text-blue-400 font-semibold">{message.alias}:</div>
                                             </div>
                                             <div className="text-base sm:text-lg lg:text-xl text-white leading-relaxed whitespace-pre-wrap">{message.message}</div>
+                                            <img src={message.postimg}></img>
                                         </div>
 
                                         <div className="text-sm sm:text-base lg:text-lg text-gray-300 mb-3">
@@ -223,7 +223,7 @@ console.log(messages);
                                 )}
                             </div>
 
-                                                  </div>
+                        </div>
                     ))
                 )}
             </div>

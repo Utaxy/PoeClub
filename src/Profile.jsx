@@ -153,6 +153,7 @@ const Profile = () => {
                   <div className="text-base sm:text-lg lg:text-xl text-white leading-relaxed whitespace-pre-wrap">
                     {message.message}
                   </div>
+                  <img src={message.postimg}></img>
                 </div>
                 <div className="text-sm sm:text-base lg:text-lg text-gray-300 mb-3">
                   {new Date(message.created_at).toLocaleString()}

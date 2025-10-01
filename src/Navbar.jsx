@@ -5,7 +5,6 @@ import { useAuth } from './Authcontext.jsx';
 
 const Navbar = ()=>{
     const {loggedUser, logout, storedPicture} = useAuth()
-    console.log(storedPicture);
     return(
         <div className='flex flex-col sm:flex-row justify-between items-center border border-white m-2 sm:m-5 rounded-2xl p-3 sm:p-4 gap-4 sm:gap-0'>
             <div className='flex justify-center gap-2 sm:gap-4 items-center'>
