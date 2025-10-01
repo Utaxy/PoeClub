@@ -207,8 +207,8 @@ const Messages = ()=>{
                                             onChange={(e) => setUserComment(e.target.value)}
                                         />
                                         <div className="flex gap-2">
-                                            <button type="submit" className="px-3 py-1 bg-blue-500 text-white rounded">Submit</button>
-                                            <button type="button" onClick={closeCommentInput} className="px-3 py-1 border rounded">Cancel</button>
+                                            <button type="submit" className="px-3 py-1 bg-blue-500 text-white rounded cursor-pointer">Submit</button>
+                                            <button type="button" onClick={closeCommentInput} className="px-3 py-1 border rounded cursor-pointer">Cancel</button>
                                         </div>
                                     </div>
                                 </form>
@@ -219,6 +219,7 @@ const Messages = ()=>{
                                     <>
                                         <div className="text-lg sm:text-xl lg:text-2xl text-gray-400 font-semibold mb-2">Anonymous:</div>
                                         <div className="text-base sm:text-lg lg:text-xl text-white leading-relaxed whitespace-pre-wrap">{message.message}</div>
+                                        <img src={message.postimg}></img>
                                     </>
                                 )}
                             </div>

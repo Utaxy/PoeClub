@@ -19,7 +19,6 @@ router.post('/api/usermessages',async(req, res)=>{
       success:true,
       data:data
     })
-    console.log(data);
   }
   catch(error){
     console.error('Database error:', error)

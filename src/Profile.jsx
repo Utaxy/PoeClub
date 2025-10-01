@@ -205,8 +205,8 @@ const Profile = () => {
                         onChange={(e) => setUserComment(e.target.value)}
                       />
                       <div className="flex gap-2">
-                        <button type="submit" className="px-3 py-1 bg-blue-500 text-white rounded">Submit</button>
-                        <button type="button" onClick={closeCommentInput} className="px-3 py-1 border rounded">Cancel</button>
+                        <button type="submit" className="px-3 py-1 bg-blue-500 text-white rounded cursor-pointer">Submit</button>
+                        <button type="button" onClick={closeCommentInput} className="px-3 py-1 border rounded cursor-pointer">Cancel</button>
                       </div>
                     </div>
                   </form>
