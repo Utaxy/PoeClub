@@ -22,6 +22,15 @@ router.get('/api/messages',async(req, res)=>{
         })
     }
 });
+router.delete('/api/messages', async(req, res)=>{
+    try {
+        const {messageId} = req.body;
+
+        await pool.query('DELETE FROM messages WHERE id=$1',[messageId])
+    } catch (error) {
+        console.error('database error',error);
+    }
+})
 
 router.post('/api/messages/likes', async(req, res)=>{
     try {

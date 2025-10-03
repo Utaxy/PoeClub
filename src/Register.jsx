@@ -61,7 +61,7 @@ const register = ()=>{
             const data = await response.json();
             if(response.ok){
                 setNotify('Registration successful. Redirecting.')
-                authLogin(data.alias)
+                authLogin(data.alias, data.picture)
                 setTimeout(()=>{
                     nav('/')
                 }, 2000)

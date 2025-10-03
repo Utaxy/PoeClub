@@ -32,9 +32,8 @@ const login = ()=>{
                 });
                 
                 const data = await response.json();
-                
                 if(response.ok){
-                    authLogin(data.alias, data.picture);
+                    authLogin(data.alias, data.picture, data.admin);
                     setNotify('Login successful!');
                     setTimeout(()=>{
                         nav('/');

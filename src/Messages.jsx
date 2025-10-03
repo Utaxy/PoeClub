@@ -7,7 +7,7 @@ const Messages = ()=>{
     const [userComment, setUserComment] = useState('');
     const [openCommentFor, setOpenCommentFor] = useState(null);
     const [comments, setComments] = useState([])
-    const {loggedUser} = useAuth();
+    const {loggedUser,isAdmin} = useAuth();
     const [notify ,setNotify] = useState('');
     const [postPicture, setPostPicture] = useState([]);
     const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
@@ -52,6 +52,18 @@ const Messages = ()=>{
         fetchComments();
     },[API]);
 
+    const handleDelete = async(messageId)=>{
+        try {
+            const response = await fetch(`${API}/api/messages`,{
+                method:'DELETE',
+                headers:{'Content-type':'application/json'},
+                body: JSON.stringify({messageId:messageId})
+            })
+        } catch (error) {
+            console.error('Error',error);
+        }
+    }
+    
     const handleLike = async(messageId)=>{
        try {
         const response = await fetch(`${API}/api/messages/likes`,{
@@ -132,6 +144,7 @@ const Messages = ()=>{
         <div className="flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col items-center gap-8 sm:gap-12 lg:gap-20 mt-5 w-full max-w-4xl">
                 <img src={eap} className="w-32 h-32 sm:w-40 sm:h-40 lg:w-auto lg:h-auto object-contain" alt="Logo" />
+                
                 {messages.length === 0 ? (
                     <div className="text-lg sm:text-xl lg:text-2xl text-white text-center">No messages found!</div>
                 ) : (
@@ -191,6 +204,7 @@ const Messages = ()=>{
                                     </svg>
                                     <span className="text-sm font-medium">Comment</span>
                                 </button>
+                                {isAdmin ?(<button type="button" onClick={()=>{handleDelete(message.id)}} className="text-white border border-white rounded-lg p-1 cursor-pointer">Delete</button>) : (null)}
                             </div>
 
                             {/* Comment form */}

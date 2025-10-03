@@ -7,13 +7,14 @@ const router = express.Router();
 router.post('/api/google-login',async(req, res)=>{
     try {
         const {googleId} = req.body;
-        const userQuery = await pool.query('SELECT alias, picture FROM users WHERE google_id= $1',[googleId]);
+        const userQuery = await pool.query('SELECT alias, picture, isadmin FROM users WHERE google_id= $1',[googleId]);
         if(userQuery.rows.length>0){
             const user = userQuery.rows[0]
             res.status(200).json({
                 success:true,
                 alias:user.alias,
-                picture:user.picture
+                picture:user.picture,
+                admin:user.isadmin
             });
         }else{
             res.status(404).json({
