@@ -1,5 +1,6 @@
 import express from 'express';
 import pool from '../database/db.js';
+import requireAuth, {requireAdmin} from '../middlewares/sessioncheck.js';
 
 
 const router = express.Router();
@@ -22,13 +23,26 @@ router.get('/api/messages',async(req, res)=>{
         })
     }
 });
-router.delete('/api/messages', async(req, res)=>{
+router.delete('/api/messages/:id',requireAuth,requireAdmin, async(req, res)=>{
     try {
-        const {messageId} = req.body;
-
-        await pool.query('DELETE FROM messages WHERE id=$1',[messageId])
+        const id = Number(req.params.id);
+        if(!Number.isInteger(id) || id <=0){
+            return res.status(400).json({
+                success:false,
+                message:'Message id is not found'
+            });
+        }
+        const del = await pool.query('DELETE FROM messages WHERE id=$1 RETURNING id',[id]);
+        if(del.rowCount===0){
+            return res.status(404).json({
+                success:false,
+                message:'Message not found'
+            })
+        }
+        return res.status(200).json({success:true, message:'Message deleted successfully'});
     } catch (error) {
-        console.error('database error',error);
+        console.error('Db error',error);
+        return res.status(500).json({success:false, message:'Database error', error:error.message})
     }
 })
 

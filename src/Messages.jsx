@@ -52,15 +52,25 @@ const Messages = ()=>{
         fetchComments();
     },[API]);
 
-    const handleDelete = async(messageId)=>{
+    const handleDelete = async (messageId) => {
         try {
-            const response = await fetch(`${API}/api/messages`,{
-                method:'DELETE',
-                headers:{'Content-type':'application/json'},
-                body: JSON.stringify({messageId:messageId})
-            })
+            const response = await fetch(`${API}/api/messages/${messageId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-user-alias': loggedUser || ''
+                }
+            });
+
+            const data = await response.json().catch(() => ({}));
+            if (response.ok) {
+                setMessages(prev => prev.filter(m => m.id !== messageId));
+            } else {
+                alert(data.message || 'Delete failed');
+            }
         } catch (error) {
-            console.error('Error',error);
+            console.error('Delete error', error);
+            alert('Server error during delete');
         }
     }
     
@@ -90,13 +100,13 @@ const Messages = ()=>{
     
     const openCommentInput = (messageId)=>{
         setOpenCommentFor(messageId);
-        setNotify(''); // Clear any previous notifications
+        setNotify(''); 
     }
     
     const closeCommentInput=()=>{
         setOpenCommentFor(null);
-        setUserComment(''); // Clear comment input
-        setNotify(''); // Clear notifications
+        setUserComment(''); 
+        setNotify('');
     }
     
     const commentSubmit = async (messageId, e) => {
@@ -117,7 +127,6 @@ const Messages = ()=>{
             const data = await response.json()
             
             if(data.success) {
-                // Refresh comments after successful submission
                 const commentsResponse = await fetch(`${API}/api/messages/comments`,{
                     method:'GET',
                     headers:{'Content-type':'application/json'}
@@ -127,7 +136,6 @@ const Messages = ()=>{
                     setComments(commentsData.data)
                 }
                 
-                // Close comment input and clear form
                 setUserComment('');
                 setOpenCommentFor(null);
                 setNotify('');
@@ -153,7 +161,6 @@ const Messages = ()=>{
                             key={message.id}
                             className="flex flex-col border border-white w-full max-w-5xl rounded-lg bg-neutral-800/50 backdrop-blur-sm overflow-hidden max-h-[400px] md:max-h-[520px] lg:max-h-[640px]"
                         >
-                            {/* Scrollable content area */}
                             <div className="p-3 md:p-6 lg:p-8 flex-1 overflow-auto">
                                 {loggedUser ? (
                                     <>
@@ -182,8 +189,6 @@ const Messages = ()=>{
                                                 </div>
                                             ))}
                                         </div>
-
-                                          {/* Action buttons */}
                             <div className="p-3 md:px-6 md:py-4 border-t border-white/10 flex gap-3 items-center">
                                 <button
                                     onClick={() => handleLike(message.id)}
@@ -206,8 +211,6 @@ const Messages = ()=>{
                                 </button>
                                 {isAdmin ?(<button type="button" onClick={()=>{handleDelete(message.id)}} className="text-white border border-white rounded-lg p-1 cursor-pointer">Delete</button>) : (null)}
                             </div>
-
-                            {/* Comment form */}
                             {openCommentFor === message.id && (
                                 <form onSubmit={(e) => commentSubmit(message.id, e)} className="p-3 md:px-6 md:py-4 border-t border-white/10 bg-neutral-900/30">
                                     <div key={message.id} className="flex flex-col gap-3">

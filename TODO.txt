@@ -1,9 +1,0 @@
-TODO LIST 
-
-1) admin admin dashboard 
-2) live chat
-3) login w/o google
-4)settings
-
-5) DEPLOY
-

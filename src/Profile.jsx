@@ -99,7 +99,6 @@ const Profile = () => {
       const data = await response.json();
 
       if (data.success) {
-        // Refresh comments after successful submission
         const commentsResponse = await fetch(`${API}/api/messages/comments`, {
           method: 'GET',
           headers: { 'Content-type': 'application/json' }
