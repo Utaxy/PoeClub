@@ -11,7 +11,7 @@ const app = express();
 
 const whitelist = [
   
-  'https://vip-club.vercel.app',
+  'https://poeclub.vercel.app/',
   'http://localhost:5173',
   'http://localhost:3000'
 ];
