@@ -10,7 +10,7 @@ const Messages = ()=>{
     const {loggedUser,isAdmin} = useAuth();
     const [notify ,setNotify] = useState('');
     const [postPicture, setPostPicture] = useState([]);
-    const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+    const API = import.meta.env.VITE_API_URL || window.location.origin
 
     useEffect(()=>{
         const fetchMessages = async()=>{

@@ -44,7 +44,11 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running!' });
 });
 
-// Lokal/harici sunucuda dinle
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Lokal/harici sunucuda dinle (Vercel'de export edilir)
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+export default app;
