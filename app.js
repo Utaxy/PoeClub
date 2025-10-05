@@ -6,40 +6,31 @@ import postLogin from './routes/login.js';
 import postPost from './routes/post.js';
 import messageRoute from './routes/message.js';
 import profileRoute from './routes/profile.js'
+
 const PORT = process.env.PORT || 8000;
 const app = express();
 
 const whitelist = [
-  
-  'https://poeclub.vercel.app',
+  'https://poeclub.vercel.app',   // prod domainin
   'http://localhost:5173',
   'http://localhost:3000'
 ];
-app.use((req, res, next) => {
-  next();
-});
+
+app.use((req, res, next) => { next(); });
 
 app.use(cors({
-  origin: function(origin, callback) {
-    // origin undefined olabilir (curl/postman) -> izin ver
-    if (!origin) return callback(null, true);
-
-    if (whitelist.includes(origin)) {
-      return callback(null, true);
-    }
+  origin(origin, callback) {
+    if (!origin) return callback(null, true); // curl/postman
+    if (whitelist.includes(origin)) return callback(null, true);
     console.warn('Blocked by CORS:', origin);
-    return callback(null, false); // izin yoksa false döner; tarayıcı CORS hatası alır
+    return callback(null, false);
   },
   credentials: true,
   methods: ['GET','POST','PUT','DELETE','OPTIONS'],
   allowedHeaders: ['Content-Type','Authorization','X-Requested-With','x-user-alias']
 }));
 
-// Preflight'ı kesin cevapla
-
-
 app.use(express.json());
-
 
 // Routes
 app.use(postRegister);
@@ -48,11 +39,16 @@ app.use(postPost);
 app.use(messageRoute);
 app.use(profileRoute);
 
-// Health check endpoint
+// Health
 app.get('/health', (req, res) => {
-    res.json({ status: 'OK', message: 'Server is running!' });
+  res.json({ status: 'OK', message: 'Server is running!' });
 });
 
-app.listen(PORT, () => {
+// Sadece lokalde port dinle; Vercel'de export edilir
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-});
+  });
+}
+
+export default app;

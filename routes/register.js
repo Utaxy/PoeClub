@@ -31,7 +31,7 @@ router.post('/api/google-register',async(req, res)=>{
         
     } catch (error) {
         console.error('Google registration failed', error);
-        res.status(500).json(error,{message:'Server error'});
+        return res.status(500).json(error,{message:'Server error'});
     }
  })
 
