@@ -13,7 +13,7 @@ const register = ()=>{
     const [googleUserData, setGoogleUserData] = useState(null);
     const nav = useNavigate();
     const {login:authLogin} = useAuth();
-    const API = import.meta.env.VITE_API_URL || window.location.origin;
+    const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
     const handleGoogleSuccess = async(credentialResponse) =>{
         try {

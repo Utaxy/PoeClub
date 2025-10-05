@@ -8,7 +8,7 @@ const Profile = () => {
   const [userComment, setUserComment] = useState('');
   const [openCommentFor, setOpenCommentFor] = useState(null);
   const [notify, setNotify] = useState('');
-  const API = import.meta.env.VITE_API_URL || window.location.origin;
+  const API = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
   useEffect(() => {
     const fetchUserMessages = async () => {
