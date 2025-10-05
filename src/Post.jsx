@@ -7,7 +7,7 @@ const Post = ()=>{
     const [file, setFile] = useState(null);
     const [mediaUrl, setMediaUrl] = useState('');
     const nav = useNavigate();
-    const API = import.meta.env.VITE_API_URL || window.location.origin
+    const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
@@ -24,6 +24,8 @@ const Post = ()=>{
 
         try {
             let uploadedUrl = '';
+
+            // Upload to Cloudinary only if a file was selected
             if(file){
                 const formData = new FormData();
                 formData.append('file', file);
@@ -140,6 +142,7 @@ const Post = ()=>{
                                     <img className="max-w-full rounded-md" src={mediaUrl} alt="preview" />
                                 )
                             ) : file ? (
+                                // temporary local preview if no uploaded url yet
                                 file.type.startsWith('video') ? (
                                     <video className="max-w-full rounded-md" controls src={URL.createObjectURL(file)} />
                                 ) : (
