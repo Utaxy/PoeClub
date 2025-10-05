@@ -39,10 +39,12 @@ app.use(postPost);
 app.use(messageRoute);
 app.use(profileRoute);
 
-// Health check
-app.get('/health', (req, res) => {
+// Health check (support both paths for serverless routing tests)
+const healthHandler = (req, res) => {
   res.json({ status: 'OK', message: 'Server is running!' });
-});
+};
+app.get('/health', healthHandler);
+app.get('/api/health', healthHandler);
 
 // Lokal/harici sunucuda dinle (Vercel'de export edilir)
 if (process.env.VERCEL !== '1') {
