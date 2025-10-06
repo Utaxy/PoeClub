@@ -9,7 +9,7 @@ const login = ()=>{
     const [notify, setNotify] = useState('');
     const {login:authLogin} = useAuth();
     const nav = useNavigate();
-    const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    const API = import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? 'http://localhost:8000' : '');
 
     const handleGoogleSuccess = async(credentialResponse)=>{
             try {

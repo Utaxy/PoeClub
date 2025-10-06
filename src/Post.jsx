@@ -7,7 +7,7 @@ const Post = ()=>{
     const [file, setFile] = useState(null);
     const [mediaUrl, setMediaUrl] = useState('');
     const nav = useNavigate();
-    const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+    const API = import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? 'http://localhost:8000' : '');
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
