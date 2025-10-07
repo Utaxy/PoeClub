@@ -25,3 +25,4 @@ Media/Storage
 Tooling
 - Vite, ESLint, Tailwind CSS
 - Deployment: Vercel
+.
