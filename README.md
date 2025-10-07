@@ -1,4 +1,4 @@
-# PoeClub (VipClub)
+# PoeClub
 LIVE DEMO : https://poeclub.vercel.app
 ![alt text](image.png)
 Short description
