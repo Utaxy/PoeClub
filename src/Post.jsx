@@ -8,6 +8,7 @@ const Post = ()=>{
     const [mediaUrl, setMediaUrl] = useState('');
     const nav = useNavigate();
     const API = import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? 'http://localhost:8000' : '');
+    const CloudinaryAPI = import.meta.env.VITE_CLOUDINARY_API
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
@@ -24,14 +25,12 @@ const Post = ()=>{
 
         try {
             let uploadedUrl = '';
-
-            // Upload to Cloudinary only if a file was selected
             if(file){
                 const formData = new FormData();
                 formData.append('file', file);
                 formData.append('upload_preset','poeclub');
 
-                const response = await fetch("https://api.cloudinary.com/v1_1/dgaiwbr7r/auto/upload",{
+                const response = await fetch(`${CloudinaryAPI}`,{
                     method:'POST',
                     body: formData
                 });
@@ -84,7 +83,6 @@ const Post = ()=>{
                 onSubmit={handleSubmit}
                 className="w-full max-w-2xl bg-neutral-900 border border-neutral-800 rounded-2xl p-6 shadow-xl text-white flex flex-col gap-6"
             >
-                {/* Notification */}
                 {notify && (
                     <div className="px-4 py-2 bg-neutral-800 text-sm rounded-md text-yellow-200 border border-yellow-800">
                         {notify}
@@ -142,7 +140,6 @@ const Post = ()=>{
                                     <img className="max-w-full rounded-md" src={mediaUrl} alt="preview" />
                                 )
                             ) : file ? (
-                                // temporary local preview if no uploaded url yet
                                 file.type.startsWith('video') ? (
                                     <video className="max-w-full rounded-md" controls src={URL.createObjectURL(file)} />
                                 ) : (

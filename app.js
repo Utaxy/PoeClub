@@ -32,19 +32,17 @@ app.use(cors({
 
 app.use(express.json());
 
-// Routes
+
 app.use(postRegister);
 app.use(postLogin);
 app.use(postPost);
 app.use(messageRoute);
 app.use(profileRoute);
 
-// Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running!' });
 });
 
-// Sadece local geliştirmede port dinle
 if (!process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
